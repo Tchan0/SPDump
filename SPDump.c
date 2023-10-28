@@ -99,6 +99,7 @@ void dumpFlashRomData (int mbitsize, int numChips){
 int main(int argc, char *argv[]) {
  printf("starting SPDump...\n");
 
+ //WARNING: this program copies the flash data into RAM, so it doesn't work yet with 512Mbits chips (easy fix needs to be implemented still)
  dumpFlashRomData (128, 3);//bingogals
  //dumpFlashRomData (128, 8);//bingogal
 
