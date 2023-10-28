@@ -1,20 +1,10 @@
-//sudo time /opt/toolchains/dc/bin/dc-tool-ser -t /dev/ttyUSB0 -b 781250 -c . -x /mnt/SSD1TB/src/SPDump/SPDump.elf 
+//How to run:
+//  sudo /opt/toolchains/dc/bin/dc-tool-ser -t /dev/ttyUSB0 -b 781250 -c . -x /mnt/SSD1TB/src/SPDump/SPDump.elf 
 
 #include <kos.h>
-//#include <time.h>
 
 #define RAM_DEST 0x8C400000
 
-
-// taken from kos examples/dreamcast/kgl/demos/specular
-//static uint32 s, ms;
-//static uint64 msec;
-/* Get current hardware timing using arch/timer.h */
-/*uint64 GetTime(void) {
-    timer_ms_gettime(&s, &ms);
-    msec = (((uint64)s) * ((uint64)1000)) + ((uint64)ms);
-    return msec;
-}*/
 
 void getROMData (uint16_t* pdst, int len){
  uint16_t* psrc = (uint16_t*)0xA1000000;
@@ -25,17 +15,18 @@ void getROMData (uint16_t* pdst, int len){
  }
 }
 
+
 void setBank (uint32_t bankNr){
  volatile uint32_t* spbankreg = (volatile uint32_t*)0xA1010000;
 
  *spbankreg = bankNr;
 }
 
+
 int curBank = 0;
 
 void dumpOneChip (char* filename, uint32_t offset, uint32_t bytesInOneChip){
  FILE *fout;
- //int readlen = 0x10000 * 2;//16777216;
  int numBanks = bytesInOneChip / 0x10000;
  uint8_t* pdst = (uint8_t*)RAM_DEST;
 
@@ -106,24 +97,10 @@ void dumpFlashRomData (int mbitsize, int numChips){
 }
 
 int main(int argc, char *argv[]) {
- //uint64 start, end;
- //time_t start, end;
- //unsigned int seconds;
-
  printf("starting SPDump...\n");
-
- //start = GetTime();
- //start = time(NULL);
 
  dumpFlashRomData (128, 3);//bingogals
  //dumpFlashRomData (128, 8);//bingogal
-
- //display stats
- //end = GetTime();
- /*end = time(NULL);
- seconds = (unsigned int) ((end - start));/// (uint64)1000);
- printf ("Time taken: %i seconds\n", seconds);
- if (seconds) printf ("Speed: %i kbytes/s\n", 16384 / seconds);*/
 
  printf("ending SPDump...\n");
  
